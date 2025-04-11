@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="w3-container w3-padding-32" style="max-width:500px; margin:auto; background:white; border-radius:10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); margin-top:50px;">
+    <h2 class="w3-center">Create an Account</h2>
+    <form method="POST" action="{% url 'signup' %}" class="w3-container">
+        {% csrf_token %}
+
+        <label class="w3-text-grey"><b>Username</b></label>
+        <input class="w3-input w3-border w3-round" type="text" name="username" required>
+
+        <label class="w3-text-grey"><b>Email</b></label>
+        <input class="w3-input w3-border w3-round" type="email" name="email" required>
+
+        <label class="w3-text-grey"><b>Password</b></label>
+        <input class="w3-input w3-border w3-round" type="password" name="password1" required>
+
+        <label class="w3-text-grey"><b>Confirm Password</b></label>
+        <input class="w3-input w3-border w3-round" type="password" name="password2" required>
+
+        <button class="w3-button w3-block w3-green w3-round-large w3-margin-top" type="submit">Sign Up</button>
+    </form>
+
+    <p class="w3-center w3-text-grey w3-small w3-margin-top">
+        Already have an account? <a href="{% url 'login' %}" class="w3-text-blue">Log In</a>
+    </p>
+</div>
+{% endblock %}

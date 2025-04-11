@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+{% block title %}
+    Employee | Reciept
+{% endblock %}
+{% block content %}
+<h1 align="center">Reciept.</h1>
+<div align="center">
+    <fieldset>
+        <table border="1px solid black">
+            <thread>
+                <tr>
+                    <th>Drug Name</th>
+                    <th>Drug Group</th>
+                    <th>Brand</th>
+                    <th>Quantity</th>
+                    <th>Price per Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thread>
+<!--            {% for instance in data %}-->
+                <tr>
+<!--                    <td>{{instance.fields.drug_name}}</td>-->
+<!--                    <td>{{instance.fields.drug_group}}</td>-->
+<!--                    <td>{{instance.fields.brand}}</td>-->
+<!--                    <td>{{instance.fields.price}}</td>-->
+<!--                    <td><button type="submit">Add to Bill</button></td>-->
+                </tr>
+<!--            {% endfor %}-->
+                <tr>
+                    <td colspan="5">Total</td>
+                    <td>#</td>
+                </tr>
+        </table>
+    </fieldset>
+    <button type="submit" >Print</button>
+</div>
+
+
+{% endblock %}

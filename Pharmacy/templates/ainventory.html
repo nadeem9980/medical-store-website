@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+{% block title %}
+    Admin | Inventory Panel
+{% endblock %}
+{% block content %}
+<h1 align="center">Admin | Inventory Panel</h1>
+<center>
+<select name="branch" id="branch_id">
+  <option value="">Select Branch</option>
+  <option value="dhanmondi">Dhanmondi</option>
+  <option value="gulshan">Gulshan</option>
+</select>
+<br>
+<form action="employee" method="POST">
+        {%csrf_token%}
+        <input type="text" name="medicine" placeholder="Medicine">
+        <input type="text" name="drug_group" placeholder="Drug Group">
+        <input type="text" name="brand" placeholder="Brand">
+        <input type="text" name="quantity" placeholder="Quantity">
+        <input type="text" name="price" placeholder="Price per quantity">
+        <button type="submit">Add</button>
+</form>
+    <fieldset>
+        <table border="1px solid black">
+            <thread>
+                <tr>
+                    <th>Drug Name</th>
+                    <th>Drug Group</th>
+                    <th>Brand</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thread>
+            {% for instance in data %}
+                <tr>
+                    <td>{{instance.fields.drug_name}}</td>
+                    <td>{{instance.fields.drug_group}}</td>
+                    <td>{{instance.fields.brand}}</td>
+                    <td>{{instance.fields.quantity}}</td>
+                    <td>{{instance.fields.price}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </fieldset>
+</center>
+
+{% endblock %}

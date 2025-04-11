@@ -1,0 +1,274 @@
+
+{% load static %}
+<!--<!doctype html>-->
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="{% static 'Pharmacy/pharmacy.css' %}">
+
+    <!--Footer-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+<!--    <link rel="stylesheet" type="text/css" href="footer.css">-->
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'Pharmacy/footer.css' %}">
+
+    <!--w3 css-->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>MOBIFY MEDICAL STORE </title>
+  </head>
+  <style>
+    html {
+  scroll-behavior: smooth;
+}
+form.example input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+form.example button {
+  float: left;
+  width: 20%;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+form.example button:hover {
+  background: #0b7dda;
+}
+
+form.example::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
+
+  <body>
+    <div class="site-mobile-menu">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+    
+    <header class="site-navbar" role="banner">
+
+      <div class="container">
+        <div class="row align-items-center">
+          
+          <div class="col-11 col-xl-2">
+            <h1 class="mb-0 site-logo"><a href="/pharmacy" class="text-white mb-0"><img src="{% static 'Pharmacy/images/logo.png'%}" height="85px" width="85px"></a></h1>
+          </div>
+          <div class="col-12 col-md-10 d-none d-xl-block">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+              <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
+                <li class="active"><a href="/medicines"><span>Medicine</span></a></li>
+                <li class="active"><a href="/contact"><span>Contact</span></a></li>
+                <li class="active"><a href="/login"><span>Login</span></a></li>
+              </ul>
+            </nav>
+          </div>
+
+
+
+          <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
+
+          </div>
+
+        </div>
+      </div>
+      
+    </header>
+    <div class="hero" style="background-image: url('{% static 'Pharmacy/images/bg.png'%}');"></div>
+
+    <!--New seach bar-->
+    <div class="w3-display-middle">
+        <div class="search-container">
+          <form class="example" action="/action_page.php" style="margin:auto;max-width:300px">
+              <input type="text" placeholder="Search drugs here..." name="search2">
+              <button type="submit"><a href="/search_drugs">Find</a></button>
+              <select name="brach" id="brach_id">
+              <option value="volvo">Select Branch</option>
+              <option value="abc">Rawalpindi</option>
+              <option value="saab">Islamabad</option>
+     </select>
+        </form>
+
+        </div>
+    </div>
+
+
+<!--Search bar-->
+<!--<h1 align="center">Find Drugs & Conditions</h1>-->
+<!--  <div class="w3-display-middle">-->
+<!--    <div class="search-container">-->
+<!--        <form action="/action_page.php">-->
+<!--          <input class="search_bar" type="text" placeholder="Enter a drug name..." name="search">-->
+<!--            <button type="submit"><a href="/search_drugs">Search</a></button>-->
+<!--&lt;!&ndash;          <button type="submit" onClick="/search_drugs"><i class="fa fa-search"></i></button>&ndash;&gt;-->
+<!--            <br>-->
+<!--            <select name="brach" id="brach_id">-->
+<!--              <option value="volvo">Select Branch</option>-->
+<!--              <option value="abc">Dhanmondi</option>-->
+<!--              <option value="saab">Gulshan</option>-->
+<!--            </select>-->
+<!--        </form>-->
+<!--      </div>-->
+<!--  </div>-->
+    
+
+    <!--Footer-->
+    <div id="contact">
+    <div class="footer-dark">
+        <footer>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3 item">
+                        <h3>About</h3>
+                        <ul>
+                            <li>Address: DHA 1 ISLAMABAD SECTOR F</li>
+                            <li>Contact Number: 6769980</li>
+                            <li>Email: contact@MOBIFY.com</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 item text">
+                        <h3>MOBIFY MEDICAL STORE </h3>
+                        <p>MOBIFY MEDICAL STORE  is the most popular and trusted retail medicine shop in Bangladesh. We have been serving the nation with genuine product and excellent customer care for more than 10 years.</p>
+                    </div>
+                    <div class="col item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-snapchat"></i></a><a href="#"><i class="icon ion-social-instagram"></i></a></div>
+                </div>
+                <p class="copyright">©2025. MOBIFY MEDICAL STORE . All rights reserved</p>
+            </div>
+        </footer>
+    </div>
+  </div>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/main.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  $(function() {
+
+  var siteSticky = function() {
+        $(".js-sticky-header").sticky({topSpacing:0});
+    };
+    siteSticky();
+
+    var siteMenuClone = function() {
+
+        $('.js-clone-nav').each(function() {
+            var $this = $(this);
+            $this.clone().attr('class', 'site-nav-wrap').appendTo('.site-mobile-menu-body');
+        });
+
+
+        setTimeout(function() {
+            
+            var counter = 0;
+      $('.site-mobile-menu .has-children').each(function(){
+        var $this = $(this);
+        
+        $this.prepend('<span class="arrow-collapse collapsed">');
+
+        $this.find('.arrow-collapse').attr({
+          'data-toggle' : 'collapse',
+          'data-target' : '#collapseItem' + counter,
+        });
+
+        $this.find('> ul').attr({
+          'class' : 'collapse',
+          'id' : 'collapseItem' + counter,
+        });
+
+        counter++;
+
+      });
+
+    }, 1000);
+
+        $('body').on('click', '.arrow-collapse', function(e) {
+      var $this = $(this);
+      if ( $this.closest('li').find('.collapse').hasClass('show') ) {
+        $this.removeClass('active');
+      } else {
+        $this.addClass('active');
+      }
+      e.preventDefault();  
+      
+    });
+
+        $(window).resize(function() {
+            var $this = $(this),
+                w = $this.width();
+
+            if ( w > 768 ) {
+                if ( $('body').hasClass('offcanvas-menu') ) {
+                    $('body').removeClass('offcanvas-menu');
+                }
+            }
+        })
+
+        $('body').on('click', '.js-menu-toggle', function(e) {
+            var $this = $(this);
+            e.preventDefault();
+
+            if ( $('body').hasClass('offcanvas-menu') ) {
+                $('body').removeClass('offcanvas-menu');
+                $this.removeClass('active');
+            } else {
+                $('body').addClass('offcanvas-menu');
+                $this.addClass('active');
+            }
+        }) 
+
+        // click outisde offcanvas
+        $(document).mouseup(function(e) {
+        var container = $(".site-mobile-menu");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+          if ( $('body').hasClass('offcanvas-menu') ) {
+                    $('body').removeClass('offcanvas-menu');
+                }
+        }
+        });
+    }; 
+    siteMenuClone();
+
+});
+</script>
+
+  </body>
+</html>

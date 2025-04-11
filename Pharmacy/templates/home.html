@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>MOBIFY MEDICAL STORE</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'Pharmacy/pharmacy.css' %}" />
+    <link rel="stylesheet" href="{% static 'Pharmacy/footer.css' %}" />
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+        height: 100%;
+      }
+
+      body {
+        background-image: url("{% static "Pharmacy/images/bg-3.png" %}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .hero {
+        height: 500px;
+        flex: 1 0 auto;
+      }
+
+      .footer-dark {
+        background-color: #222;
+        color: #f5f5f5;
+        padding: 20px 0;
+        margin-top: auto;
+        position: relative;
+        width: 100%;
+      }
+
+      .footer-dark .container {
+        max-width: 1500px;
+        padding: 0 15px;
+      }
+
+      .footer-dark .row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .footer-dark .item {
+        padding: 15px;
+        flex: 1 1 250px;
+      }
+
+      .footer-dark .item.social {
+        text-align: center;
+      }
+
+      .footer-dark .item.social a {
+        font-size: 24px;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        display: inline-block;
+        margin: 0 8px;
+        color: #fff;
+        opacity: 0.75;
+      }
+
+      .footer-dark .item.social a:hover {
+        opacity: 1;
+      }
+
+      .copyright {
+        text-align: center;
+        margin-top: 15px;
+        opacity: 0.8;
+        font-size: 13px;
+      }
+
+      @media (max-width: 767px) {
+        .footer-dark .item {
+          flex: 1 1 100%;
+          text-align: center;
+        }
+
+        .footer-dark .item.social {
+          margin-top: 20px;
+        }
+
+        .footer-dark .item.social a {
+          margin: 0 10px;
+        }
+
+        .footer-dark .item.text {
+          order: -1;
+        }
+
+        .navbar-brand span {
+          font-size: 16px;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .footer-dark .item.social {
+          text-align: right;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Responsive Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img src="{% static 'Pharmacy/images/logo.png' %}" alt="Logo" height="60" />
+          <span style="color: off-white; font-size: 20px; margin-left: 10px">MOBIFY Pharmacy</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/medicines">Medicines</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contact">Contact</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Image -->
+    <div class="hero"></div>
+
+    <!-- Footer -->
+    <div id="contact" class="footer-dark">
+      <footer>
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-md-4 item">
+              <h3>About</h3>
+              <ul>
+                <li>Address: DHA 1 ISLAMABAD SECTOR F</li>
+                <li>Contact Number: 6769980</li>
+                <li>Email: contact@MOBIFY.com</li>
+              </ul>
+            </div>
+            <div class="col-12 col-md-4 item text">
+              <h3>MOBIFY MEDICAL STORE</h3>
+              <p>
+                MOBIFY MEDICAL STORE is the most popular and trusted retail
+                medicine shop in Pakistan Punjab. We have been serving the
+                nation with genuine products and excellent customer care for
+                more than 10 years.
+              </p>
+            </div>
+            <div class="col-12 col-md-4 item social">
+              <a href="https://www.facebook.com/share/19AChU5EJb/"><i class="icon ion-social-facebook"></i></a>
+              <a href="https://wa.me/923037442533"><i class="icon ion-social-whatsapp"></i></a>
+              <a href="#"><i class="icon ion-social-snapchat"></i></a>
+              <a href="#"><i class="icon ion-social-instagram"></i></a>
+            </div>
+          </div>
+          <p class="copyright">©2025 MOBIFY MEDICAL STORE. All rights reserved</p>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Bootstrap JS + jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
