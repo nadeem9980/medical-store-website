@@ -4,12 +4,19 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
-from .models import Medicine, Inventory, Sale, Order, Bill, PreBooking, UserProfile
+from .models import (
+    Medicine,
+    Inventory,
+    Sale,
+    Order,
+    Bill,
+    PreBooking,
+    UserProfile,
+    Contact,
+)
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.conf import settings
-from django.views.decorators.http import require_POST
 
 
 # ✅ Home page
@@ -70,9 +77,10 @@ def contact(request):
         message = request.POST.get("message")
 
         if name and email and subject and message:
-            full_message = f"From: {name} <{email}>\n\nMessage:\n{message}"
-            # Optionally send email using Django's email system
-            # send_mail(subject, full_message, email, ['you@example.com'])
+            Contact.objects.create(
+                name=name, email=email, subject=subject, message=message
+            )
+            # Optionally send email too
             return render(request, "contact.html", {"success": True})
         else:
             return render(
@@ -215,7 +223,6 @@ def view_cart(request):
     )
 
 
-@require_POST
 def remove_from_cart(request):
     medicine_id = str(request.POST.get("medicine_id"))
     cart = request.session.get("cart", {})
@@ -227,37 +234,31 @@ def remove_from_cart(request):
     return redirect("view_cart")
 
 
-@login_required
 def checkout(request):
     cart = request.session.get("cart", {})
     if not cart:
-        return redirect("view_cart")
+        return redirect("cart")
 
-    total_price = 0
-    order = Order.objects.create(user=request.user, total_price=0)
+    bill = Bill.objects.create(user_profile="Test Customer")  # Replace as needed
 
-    for med_id, qty in cart.items():
+    for medicine_id, quantity in cart.items():
         try:
-            medicine = Medicine.objects.get(pk=med_id)
+            medicine = Medicine.objects.get(id=medicine_id)
             price = medicine.price
-            subtotal = price * qty
-            Order.objects.create(
-                order=order,
+
+            order = Order(
+                bill=bill,
                 medicine=medicine,
-                quantity=qty,
-                price=price,
+                quantity=quantity,
+                price_per_unit=price,
+                status="pending",
             )
-            total_price += subtotal
+            order.save()
         except Medicine.DoesNotExist:
-            continue
+            continue  # Or handle error: medicine was deleted from DB
 
-    order.total_price = total_price
-    order.save()
-
-    # Clear cart
     request.session["cart"] = {}
-
-    return redirect("checkout_success")
+    return render(request, "checkout_success.html")
 
 
 def checkout_success(request):
