@@ -88,6 +88,9 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
+        if self.quantity is None or self.price_per_unit is None:
+            raise ValueError("Quantity and price_per_unit must be set before saving an Order.")
+
         self.total_price = self.quantity * self.price_per_unit
 
         if self.pk:
@@ -106,8 +109,6 @@ class Order(models.Model):
 
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return f"Order #{self.id} - {self.medicine.name} x{self.quantity}"
 
 
 class Sale(models.Model):
@@ -129,3 +130,13 @@ class PreBooking(models.Model):
 
     def __str__(self):
         return f"{self.user_profile.user_name} booked {self.medicine.name}"
+    
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.subject}"
