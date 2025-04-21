@@ -29,7 +29,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['*']
 
-ALLOWED_HOSTS = ['c3ec-115-186-148-210.ngrok-free.app', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['c3ec-115-186-148-210.ngrok-free.app', 'localhost', '127.0.0.1' , 'nadeem9980.pythonanywhere.com']
 
 
 
