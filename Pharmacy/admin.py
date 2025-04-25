@@ -8,6 +8,7 @@ from .models import (
     Sale,
     Bill,
     PreBooking,
+    Doctor,
 )
 
 
@@ -64,3 +65,10 @@ class PreBookingAdmin(admin.ModelAdmin):
     list_display = ("id", "user_profile", "medicine", "quantity", "booking_date")
     search_fields = ("user_profile__user_name", "medicine__name")
     ordering = ("-booking_date",)
+
+
+@admin.register(Doctor)
+class DoctorAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "specialty", "phone", "email")
+    search_fields = ("name", "specialty", "email")
+    ordering = ("name",)

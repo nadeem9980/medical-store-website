@@ -25,7 +25,7 @@ class Medicine(models.Model):
     name = models.CharField(max_length=100)
     details = models.TextField(blank=True, null=True)
     link = models.URLField(max_length=200, blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2 , default=50.00)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=50.00)
     group = models.CharField(max_length=100, blank=True, null=True)
     brand = models.CharField(max_length=100, blank=True, null=True)
     batch_no = models.CharField(max_length=50, blank=True, null=True)
@@ -89,7 +89,9 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         if self.quantity is None or self.price_per_unit is None:
-            raise ValueError("Quantity and price_per_unit must be set before saving an Order.")
+            raise ValueError(
+                "Quantity and price_per_unit must be set before saving an Order."
+            )
 
         self.total_price = self.quantity * self.price_per_unit
 
@@ -108,7 +110,6 @@ class Order(models.Model):
             inventory.save()
 
         super().save(*args, **kwargs)
-
 
 
 class Sale(models.Model):
@@ -130,7 +131,8 @@ class PreBooking(models.Model):
 
     def __str__(self):
         return f"{self.user_profile.user_name} booked {self.medicine.name}"
-    
+
+
 class Contact(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -140,3 +142,16 @@ class Contact(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.subject}"
+
+
+class Doctor(models.Model):
+    name = models.CharField(max_length=100)
+    specialty = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField()
+    address = models.TextField()
+    latitude = models.DecimalField(max_digits=10, decimal_places=6)
+    longitude = models.DecimalField(max_digits=10, decimal_places=6)
+
+    def __str__(self):
+        return self.name

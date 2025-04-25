@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Doctor Consultation</h2>
+  <p>Welcome to our Doctor Consultation service. Below are our available doctors:</p>
+
+  <div class="row">
+    {% for doctor in doctors %}
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h4 class="card-title">{{ doctor.name }}</h4>
+          <p class="card-text"><strong>Specialty:</strong> {{ doctor.specialty }}</p>
+          <p class="card-text"><strong>Phone:</strong> <a href="tel:{{ doctor.phone }}">{{ doctor.phone }}</a></p>
+          <p class="card-text"><strong>Email:</strong> <a href="mailto:{{ doctor.email }}">{{ doctor.email }}</a></p>
+          <p class="card-text"><strong>Address:</strong> {{ doctor.address }}</p>
+          <button type="button" class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#doctorModal{{ doctor.id }}">
+            View More
+          </button>
+        </div>
+        <div class="card-footer p-0">
+          <iframe
+            src="https://www.google.com/maps?q={{ doctor.latitude }},{{ doctor.longitude }}&hl=en&z=15&output=embed"
+            width="100%"
+            height="200"
+            style="border:0;"
+            allowfullscreen=""
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="doctorModal{{ doctor.id }}" tabindex="-1" aria-labelledby="doctorModalLabel{{ doctor.id }}" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="doctorModalLabel{{ doctor.id }}">{{ doctor.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>Specialty:</strong> {{ doctor.specialty }}</p>
+            <p><strong>Phone:</strong> {{ doctor.phone }}</p>
+            <p><strong>Email:</strong> {{ doctor.email }}</p>
+            <p><strong>Address:</strong> {{ doctor.address }}</p>
+            <iframe
+              src="https://www.google.com/maps?q={{ doctor.latitude }},{{ doctor.longitude }}&hl=en&z=15&output=embed"
+              width="100%"
+              height="300"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

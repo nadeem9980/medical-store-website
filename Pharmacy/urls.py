@@ -22,11 +22,11 @@ urlpatterns = [
     path("bills/", views.bill_list, name="bill_list"),
     # Prebooking
     path("prebookings/", views.prebooking_list, name="prebooking_list"),
-    path('add-to-cart/', views.add_to_cart, name='add_to_cart'),
-    path('cart/', views.view_cart, name='view_cart'),
-    path('remove-from-cart/', views.remove_from_cart, name='remove_from_cart'),
-    path('checkout/', views.checkout, name='checkout'),
-    path('checkout-success/', views.checkout_success, name='checkout_success'),
-
-
+    path("add-to-cart/", views.add_to_cart, name="add_to_cart"),
+    path("cart/", views.view_cart, name="view_cart"),
+    path("remove-from-cart/", views.remove_from_cart, name="remove_from_cart"),
+    path("checkout/", views.checkout, name="checkout"),
+    path("checkout-success/", views.checkout_success, name="checkout_success"),
+    path("checkout-success/", views.checkout_success, name="checkout_success"),
+    path('doctor-consultation/', views.doctor_list, name='doctor_list'),
 ]

@@ -17,6 +17,8 @@ from .models import (
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login
 from django.conf import settings
+from django.shortcuts import get_object_or_404, render
+from .models import Doctor
 
 
 # ✅ Home page
@@ -293,3 +295,10 @@ def bill_list(request):
 def prebooking_list(request):
     prebookings = PreBooking.objects.select_related("user_profile", "medicine").all()
     return render(request, "aprebooklists.html", {"prebookings": prebookings})
+
+
+def doctor_list(request):
+    doctors = Doctor.objects.all()
+
+    print("Doctors:", doctors)  # Debugging line to check the doctors queryset
+    return render(request, "doctor_list.html", {"doctors": doctors})
