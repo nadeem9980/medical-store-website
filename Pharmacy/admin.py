@@ -9,6 +9,7 @@ from .models import (
     Bill,
     PreBooking,
     Doctor,
+    Cosmetic,
 )
 
 
@@ -71,4 +72,21 @@ class PreBookingAdmin(admin.ModelAdmin):
 class DoctorAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "specialty", "phone", "email")
     search_fields = ("name", "specialty", "email")
+    ordering = ("name",)
+
+
+@admin.register(Cosmetic)
+class CosmeticAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "details",
+        "price",
+        "category",
+        "brand",
+        "batch_no",
+        "expiry_date",
+    )
+    search_fields = ("name", "category", "brand")
+    list_filter = ("category", "brand", "expiry_date")
     ordering = ("name",)

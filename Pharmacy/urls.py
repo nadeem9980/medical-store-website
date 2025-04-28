@@ -28,5 +28,6 @@ urlpatterns = [
     path("checkout/", views.checkout, name="checkout"),
     path("checkout-success/", views.checkout_success, name="checkout_success"),
     path("checkout-success/", views.checkout_success, name="checkout_success"),
-    path('doctor-consultation/', views.doctor_list, name='doctor_list'),
+    path("doctor-consultation/", views.doctor_list, name="doctor_list"),
+    path("cosmetics/", views.all_cosmetics, name="cosmetics"),
 ]

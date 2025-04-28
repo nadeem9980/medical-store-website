@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Medicine List{% endblock %}
+{% block title %}Cosmetic List{% endblock %}
 
 {% block content %}
 <div class="main-container">
@@ -15,14 +15,14 @@
 
         </div>
 
-        <h2 class="section-title">Available Medicines</h2>
-        <div class="medicine-grid">
-            {% for medicine in medicines %}
-            <div class="medicine-card" data-id="{{ medicine.id }}" data-name="{{ medicine.name }}" data-price="{{ medicine.price }}">
-                <img src="{{ MEDIA_URL }}{{ medicine.image }}" alt="{{ medicine.name }}" width="150" height="150">
-                <h4 class="medicine-name">{{ medicine.name }}</h4>
-                <p class="pack">Pack of 1 {{ medicine.group }}</p>
-                <p class="price">Rs. {{ medicine.price }}</p>
+        <h2 class="section-title">Available Cosmetics</h2>
+        <div class="cosmetic-grid">
+            {% for cosmetic in cosmetics %}
+            <div class="cosmetic-card" data-id="{{ cosmetic.id }}" data-name="{{ cosmetic.name }}" data-price="{{ cosmetic.price }}">
+                <img src="{{ MEDIA_URL }}{{ cosmetic.image }}" alt="{{ cosmetic.name }}" width="150" height="150">
+                <h4 class="cosmetic-name">{{ cosmetic.name }}</h4>
+                <p class="group">Pack of 1 {{ cosmetic.group }}</p>
+                <p class="price">Rs. {{ cosmetic.price }}</p>
                 <div class="qty-container">
                     <button class="qty-btn">-</button>
                     <input type="text" value="1" class="qty-input">
@@ -30,7 +30,7 @@
                 </div>
                 <form method="post" action="{% url 'add_to_cart' %}">
                     {% csrf_token %}
-                    <input type="hidden" name="medicine_id" value="{{ medicine.id }}">
+                    <input type="hidden" name="cosmetic_id" value="{{ cosmetic.id }}">
                     <input type="hidden" class="qty-hidden" name="quantity" value="1">
                     <button type="submit" class="add-btn">Add to Cart</button>
                 </form>
@@ -45,7 +45,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.medicine-card').forEach(card => {
+    document.querySelectorAll('.cosmetic-card').forEach(card => {
         const minusBtn = card.querySelector('.qty-btn:first-child');
         const plusBtn = card.querySelector('.qty-btn:last-child');
         const qtyInput = card.querySelector('.qty-input');
@@ -138,13 +138,13 @@ document.addEventListener('DOMContentLoaded', function () {
     margin-left: 5px;
 }
 
-.medicine-grid {
+.cosmetic-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
 }
 
-.medicine-card {
+.cosmetic-card {
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -154,17 +154,17 @@ document.addEventListener('DOMContentLoaded', function () {
     transition: 0.3s;
 }
 
-.medicine-card:hover {
+.cosmetic-card:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-.medicine-name {
+.cosmetic-name {
     font-size: 16px;
     font-weight: bold;
     margin: 10px 0 5px;
 }
 
-.pack {
+.group {
     font-size: 13px;
     color: gray;
 }
@@ -207,8 +207,9 @@ document.addEventListener('DOMContentLoaded', function () {
     font-size: 14px;
     transition: background 0.3s;
 }
+
 .section-title {
-text-align: center;
+    text-align: center;
     font-size: 24px;
     margin-bottom: 20px;
     color: #333;

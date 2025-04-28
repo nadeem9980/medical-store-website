@@ -155,3 +155,22 @@ class Doctor(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Cosmetic(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=50.00)
+    details = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+    brand = models.CharField(max_length=100, blank=True, null=True)
+    batch_no = models.CharField(max_length=50, blank=True, null=True)
+    expiry_date = models.DateField(blank=True, null=True)
+    image = models.ImageField(upload_to="cosmetic_images/", blank=True, null=True)
+    added_by = models.ForeignKey(
+        Admin, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name

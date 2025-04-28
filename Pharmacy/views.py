@@ -13,6 +13,7 @@ from .models import (
     PreBooking,
     UserProfile,
     Contact,
+    Cosmetic,
 )
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login
@@ -189,19 +190,29 @@ def medicine_list(request):
     )
 
 
+from django.http import HttpResponseRedirect
+
+
 def add_to_cart(request):
     if request.method == "POST":
-        medicine_id = str(request.POST.get("medicine_id"))
+        item_id = str(
+            request.POST.get("medicine_id") or request.POST.get("cosmetic_id")
+        )
         quantity = int(request.POST.get("quantity", 1))
         cart = request.session.get("cart", {})
 
-        if medicine_id in cart:
-            cart[medicine_id] += quantity
+        if item_id in cart:
+            cart[item_id] += quantity
         else:
-            cart[medicine_id] = quantity
+            cart[item_id] = quantity
 
         request.session["cart"] = cart
-        return redirect("medicine_list")  # Change if needed
+
+        # Redirect back to the page from where the request came
+        referer = request.META.get(
+            "HTTP_REFERER", "default_url"
+        )  # 'default_url' can be a fallback if referer is not available
+        return HttpResponseRedirect(referer)
 
 
 def view_cart(request):
@@ -241,26 +252,26 @@ def checkout(request):
     if not cart:
         return redirect("cart")
 
-    bill = Bill.objects.create(user_profile="Test Customer")  # Replace as needed
+    # bill = Bill.objects.create(user_profile="Test Customer")  # Replace as needed
 
-    for medicine_id, quantity in cart.items():
-        try:
-            medicine = Medicine.objects.get(id=medicine_id)
-            price = medicine.price
+    # for medicine_id, quantity in cart.items():
+    #     try:
+    #         medicine = Medicine.objects.get(id=medicine_id)
+    #         price = medicine.price
 
-            order = Order(
-                bill=bill,
-                medicine=medicine,
-                quantity=quantity,
-                price_per_unit=price,
-                status="pending",
-            )
-            order.save()
-        except Medicine.DoesNotExist:
-            continue  # Or handle error: medicine was deleted from DB
+    #         order = Order(
+    #             bill=bill,
+    #             medicine=medicine,
+    #             quantity=quantity,
+    #             price_per_unit=price,
+    #             status="pending",
+    #         )
+    #         order.save()
+    #     except Medicine.DoesNotExist:
+    #         continue  # Or handle error: medicine was deleted from DB
 
-    request.session["cart"] = {}
-    return render(request, "checkout_success.html")
+    # request.session["cart"] = {}
+    return render(request, "home.html")
 
 
 def checkout_success(request):
@@ -302,3 +313,23 @@ def doctor_list(request):
 
     print("Doctors:", doctors)  # Debugging line to check the doctors queryset
     return render(request, "doctor_list.html", {"doctors": doctors})
+
+
+def all_cosmetics(request):
+    query = request.GET.get("q", "")  # Search query from URL
+    # Filter cosmetics based on the search query if any
+    cosmetics = (
+        Cosmetic.objects.filter(name__icontains=query)
+        if query
+        else Cosmetic.objects.all()
+    )
+
+    # Pass the cosmetics data and MEDIA_URL to the template context
+    return render(
+        request,
+        "all_cosmetics.html",
+        {
+            "cosmetics": cosmetics,
+            "MEDIA_URL": settings.MEDIA_URL,  # Add MEDIA_URL to the context
+        },
+    )
