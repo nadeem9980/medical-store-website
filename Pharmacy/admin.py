@@ -10,6 +10,7 @@ from .models import (
     PreBooking,
     Doctor,
     Cosmetic,
+    OrderItem,
 )
 
 
@@ -40,12 +41,45 @@ class InventoryAdmin(admin.ModelAdmin):
     list_filter = ("availability",)
 
 
+# OrderAdmin for displaying order details in admin panel
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("id", "medicine", "quantity", "status", "total_price", "created_at")
+    list_display = (
+        "id",
+        "customer_name",
+        "status",
+        "total_price",
+        "created_at",
+        "updated_at",
+    )
     list_filter = ("status", "created_at")
-    search_fields = ("medicine__name",)
+    search_fields = ("customer_name", "customer_phone", "customer_address")
     ordering = ("-created_at",)
+
+    # Inline display for OrderItem (this will allow you to see the order items inside each order)
+    # inlines = [OrderItemInline]
+
+
+# OrderItemAdmin for managing the items in the order
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0  # No extra empty fields by default
+    fields = ("product_name", "quantity", "price_per_unit", "total_price")
+
+
+# Register the OrderItem model separately if you want to manage it in the admin separately
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = (
+        "order",
+        "product_name",
+        "quantity",
+        "price_per_unit",
+        "total_price",
+    )
+    list_filter = ("order",)
+    search_fields = ("product_name", "order__customer_name")
+    ordering = ("order",)
 
 
 @admin.register(Bill)
