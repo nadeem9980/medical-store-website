@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Checkout</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        padding: 30px;
+      }
+
+      .checkout-container {
+        background-color: #fff;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 25px 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2,
+      h3 {
+        text-align: center;
+        color: #333;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+      }
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #f1f1f1;
+      }
+
+      .total-row td {
+        font-weight: bold;
+        background-color: #f9f9f9;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      input[type="text"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        background-color: #28a745;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #218838;
+      }
+
+      .error-list {
+        color: red;
+        margin-bottom: 20px;
+      }
+
+      .error-list li {
+        list-style: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="checkout-container">
+      <h2>Checkout</h2>
+
+      <h3>Your Cart</h3>
+
+      {% if cart_items %}
+      <table>
+        <thead>
+          <tr>
+            <th>Medicine</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+          <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.subtotal }}</td>
+          </tr>
+          {% endfor %}
+          <tr class="total-row">
+            <td colspan="3">Total</td>
+            <td>{{ total_price }}</td>
+          </tr>
+        </tbody>
+      </table>
+      {% else %}
+      <p>Your cart is empty.</p>
+      {% endif %} {% if form.errors %}
+      <ul class="error-list">
+        {% for field in form %} {% for error in field.errors %}
+        <li>{{ field.label }}: {{ error }}</li>
+        {% endfor %} {% endfor %}
+      </ul>
+      {% endif %}
+
+      <form method="post">
+        {% csrf_token %}
+
+        <label for="id_name">Name</label>
+        <input
+          type="text"
+          name="name"
+          id="id_name"
+          value="{{ form.name.value|default_if_none:'' }}"
+        />
+
+        <label for="id_phone">Phone</label>
+        <input
+          type="text"
+          name="phone"
+          id="id_phone"
+          value="{{ form.phone.value|default_if_none:'' }}"
+        />
+
+        <label for="id_address">Address</label>
+        <textarea name="address" id="id_address" rows="4">
+{{ form.address.value|default_if_none:'' }}</textarea
+        >
+
+        <button type="submit">Confirm Order</button>
+      </form>
+    </div>
+  </body>
+</html>

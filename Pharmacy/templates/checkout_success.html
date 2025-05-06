@@ -1,9 +1,8 @@
-{% extends 'base.html' %}
-{% block title %}Checkout Successful{% endblock %}
-{% block content %}
-<div class="container text-center mt-5">
-    <h2>Thank you for your order!</h2>
-    <p>Your order has been placed successfully.</p>
-    <a href="{% url 'medicine_list' %}" class="btn btn-primary">Continue Shopping</a>
-</div>
-{% endblock %}
+<h2>Thank you for your order, {{ name }}!</h2>
+<p>We will contact you at {{ phone }} and deliver to:</p>
+<p>{{ address }}</p>
+
+<h3>Payment Instructions</h3>
+<p>{{ payment_info }}</p>
+<p>Order ID: {{ order_id }}</p>
+<p>Order Date: {{ order_date }}</p>

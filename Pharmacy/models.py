@@ -57,6 +57,25 @@ class Inventory(models.Model):
         return f"{self.medicine.name} - {self.quantity} in stock"
 
 
+class Cosmetic(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=50.00)
+    details = models.TextField(blank=True, null=True)
+    category = models.CharField(max_length=100, blank=True, null=True)
+    brand = models.CharField(max_length=100, blank=True, null=True)
+    batch_no = models.CharField(max_length=50, blank=True, null=True)
+    expiry_date = models.DateField(blank=True, null=True)
+    image = models.ImageField(upload_to="cosmetic_images/", blank=True, null=True)
+    added_by = models.ForeignKey(
+        Admin, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Bill(models.Model):
     id = models.AutoField(primary_key=True)
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -70,6 +89,41 @@ class Bill(models.Model):
         return f"Bill #{self.id} - {self.user_profile.user_name}"
 
 
+# class Order(models.Model):
+#     STATUS_CHOICES = [
+#         ("pending", "Pending"),
+#         ("completed", "Completed"),
+#         ("canceled", "Canceled"),
+#     ]
+
+#     id = models.AutoField(primary_key=True)
+#     # medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+#     product = models.TextField(blank=True, null=True)  # Product Name
+#     quantity = models.PositiveIntegerField(blank=True, null=True)  # Quantity
+#     price_per_unit = models.DecimalField(
+#         max_digits=10, decimal_places=2, blank=True, null=True
+#     )
+#     total_price = models.DecimalField(
+#         max_digits=10, decimal_places=2, blank=True, null=True
+#     )
+#     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
+#     cancel_reason = models.TextField(blank=True, null=True)
+#     customer_name = models.CharField(max_length=100)  # Customer Name
+#     customer_phone = models.CharField(max_length=15)  # Customer Phone
+#     customer_address = models.TextField()  # Customer Address
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
+#     def save(self, *args, **kwargs):
+#         if self.quantity is None or self.price_per_unit is None:
+#             raise ValueError(
+#                 "Quantity and price_per_unit must be set before saving an Order."
+#             )
+
+#         self.total_price = self.quantity * self.price_per_unit
+#         super().save(*args, **kwargs)
+
+
 class Order(models.Model):
     STATUS_CHOICES = [
         ("pending", "Pending"),
@@ -78,37 +132,30 @@ class Order(models.Model):
     ]
 
     id = models.AutoField(primary_key=True)
-    bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
-    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
+    customer_name = models.CharField(max_length=100)
+    customer_phone = models.CharField(max_length=15)
+    customer_address = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Order #{self.id} - {self.customer_name}"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, related_name="items", on_delete=models.CASCADE)
+    product_name = models.CharField(max_length=255)
     quantity = models.PositiveIntegerField()
     price_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
-    cancel_reason = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        if self.quantity is None or self.price_per_unit is None:
-            raise ValueError(
-                "Quantity and price_per_unit must be set before saving an Order."
-            )
-
         self.total_price = self.quantity * self.price_per_unit
-
-        if self.pk:
-            old_order = Order.objects.get(pk=self.pk)
-            if old_order.status != self.status:
-                inventory = Inventory.objects.get(medicine=self.medicine)
-                if self.status == "canceled":
-                    inventory.quantity += self.quantity
-                elif self.status == "completed" and old_order.status == "canceled":
-                    inventory.quantity -= self.quantity
-                inventory.save()
-        else:
-            inventory = Inventory.objects.get(medicine=self.medicine)
-            inventory.quantity -= self.quantity
-            inventory.save()
-
         super().save(*args, **kwargs)
 
 
@@ -152,25 +199,6 @@ class Doctor(models.Model):
     address = models.TextField()
     latitude = models.DecimalField(max_digits=10, decimal_places=6)
     longitude = models.DecimalField(max_digits=10, decimal_places=6)
-
-    def __str__(self):
-        return self.name
-
-
-class Cosmetic(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=50.00)
-    details = models.TextField(blank=True, null=True)
-    category = models.CharField(max_length=100, blank=True, null=True)
-    brand = models.CharField(max_length=100, blank=True, null=True)
-    batch_no = models.CharField(max_length=50, blank=True, null=True)
-    expiry_date = models.DateField(blank=True, null=True)
-    image = models.ImageField(upload_to="cosmetic_images/", blank=True, null=True)
-    added_by = models.ForeignKey(
-        Admin, on_delete=models.SET_NULL, null=True, blank=True
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

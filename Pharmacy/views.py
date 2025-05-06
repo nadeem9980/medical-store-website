@@ -7,19 +7,18 @@ from django.utils.crypto import get_random_string
 from .models import (
     Medicine,
     Inventory,
-    Sale,
     Order,
-    Bill,
-    PreBooking,
     UserProfile,
     Contact,
     Cosmetic,
+    OrderItem,
+    Doctor,
 )
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth import login
+from django.contrib.auth import update_session_auth_hash, login
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render
-from .models import Doctor
+from django.http import HttpResponseRedirect
+from .forms import CheckoutForm
 
 
 # ✅ Home page
@@ -190,9 +189,6 @@ def medicine_list(request):
     )
 
 
-from django.http import HttpResponseRedirect
-
-
 def add_to_cart(request):
     if request.method == "POST":
         item_id = str(
@@ -215,24 +211,86 @@ def add_to_cart(request):
         return HttpResponseRedirect(referer)
 
 
-def view_cart(request):
+def cart_view(request):
     cart = request.session.get("cart", {})
     cart_items = []
-
     total_price = 0
-    for med_id, qty in cart.items():
-        try:
-            medicine = Medicine.objects.get(pk=med_id)
-            subtotal = medicine.price * qty
-            cart_items.append(
-                {"medicine": medicine, "quantity": qty, "total": subtotal}
-            )
-            total_price += subtotal
-        except Medicine.DoesNotExist:
-            pass
 
+    # Handle both Medicine and Cosmetic items in the cart
+    for product_id, quantity in cart.items():
+        try:
+            # Try to get Medicine first
+            product = Medicine.objects.get(id=product_id)
+        except Medicine.DoesNotExist:
+            # If not found, try to get Cosmetic
+            try:
+                product = Cosmetic.objects.get(id=product_id)
+            except Cosmetic.DoesNotExist:
+                continue  # Skip this item if not found in either Medicine or Cosmetic
+
+        subtotal = product.price * quantity
+        cart_items.append(
+            {
+                "product": product,
+                "quantity": quantity,
+                "total": subtotal,
+                "price": product.price,
+            }
+        )
+        total_price += subtotal
+
+    show_form = False
+    form = CheckoutForm()
+
+    if request.method == "POST":
+        if request.POST.get("show_form") == "1":
+            show_form = True  # user clicked Proceed
+        else:
+            form = CheckoutForm(request.POST)
+            if form.is_valid():
+                name = form.cleaned_data["name"]
+                phone = form.cleaned_data["phone"]
+                address = form.cleaned_data["address"]
+
+                # Create a single order for all cart items
+                order = Order.objects.create(
+                    total_price=total_price,
+                    customer_name=name,
+                    customer_phone=phone,
+                    customer_address=address,
+                    status="pending",
+                )
+
+                # Create an OrderItem for each product in the cart
+                for item in cart_items:
+                    OrderItem.objects.create(
+                        order=order,
+                        product_name=item["product"].name,  # Store the product name
+                        quantity=item["quantity"],  # Set quantity
+                        price_per_unit=item["price"],  # Set price per unit
+                        total_price=item["total"],  # Set total price for this item
+                    )
+
+                # Clear the cart after successful order placement
+                request.session["cart"] = {}
+
+                # Send the success message with payment instructions
+                payment_number = "+92-3037442533"
+                messages.success(
+                    request,
+                    f"Order placed successfully. Please send payment to Jazzcash: {payment_number} and send a snapshot of your payment on WhatsApp for confirmation.",
+                )
+
+                return redirect("view_cart")
     return render(
-        request, "cart.html", {"cart_items": cart_items, "total_price": total_price}
+        request,
+        "cart.html",
+        {
+            "cart_items": cart_items,
+            "total_price": total_price,
+            "form": form,
+            "show_form": show_form,
+        },
     )
 
 
@@ -252,26 +310,46 @@ def checkout(request):
     if not cart:
         return redirect("cart")
 
-    # bill = Bill.objects.create(user_profile="Test Customer")  # Replace as needed
+    if request.method == "POST":
+        form = CheckoutForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data["name"]
+            phone = form.cleaned_data["phone"]
+            address = form.cleaned_data["address"]
 
-    # for medicine_id, quantity in cart.items():
-    #     try:
-    #         medicine = Medicine.objects.get(id=medicine_id)
-    #         price = medicine.price
+            # Process each item into an Order (optional: add name/phone/address if model allows)
+            for medicine_id, quantity in cart.items():
+                try:
+                    medicine = Medicine.objects.get(id=medicine_id)
+                    Order.objects.create(
+                        medicine=medicine,
+                        quantity=quantity,
+                        price_per_unit=medicine.price,
+                        status="pending",
+                    )
+                except Medicine.DoesNotExist:
+                    continue
 
-    #         order = Order(
-    #             bill=bill,
-    #             medicine=medicine,
-    #             quantity=quantity,
-    #             price_per_unit=price,
-    #             status="pending",
-    #         )
-    #         order.save()
-    #     except Medicine.DoesNotExist:
-    #         continue  # Or handle error: medicine was deleted from DB
+            # Clear the cart
+            request.session["cart"] = {}
+            request.session.modified = True
 
-    # request.session["cart"] = {}
-    return render(request, "home.html")
+            # Show message to send payment manually
+            return render(
+                request,
+                "order_success.html",
+                {
+                    "name": name,
+                    "phone": phone,
+                    "address": address,
+                    "payment_info": "Please send payment to JazzCash 0300-XXXXXXX",
+                },
+            )
+
+    else:
+        form = CheckoutForm()
+
+    return render(request, "checkout.html", {"form": form})
 
 
 def checkout_success(request):
@@ -282,30 +360,6 @@ def checkout_success(request):
 def inventory_view(request):
     inventory = Inventory.objects.select_related("medicine").all()
     return render(request, "ainventory.html", {"inventory": inventory})
-
-
-# ✅ Sales display
-def sales_view(request):
-    sales = Sale.objects.select_related("bill").all()
-    return render(request, "asales.html", {"sales": sales})
-
-
-# ✅ Orders display
-def order_list(request):
-    orders = Order.objects.select_related("medicine", "bill").all()
-    return render(request, "order_list.html", {"orders": orders})
-
-
-# ✅ Bill list
-def bill_list(request):
-    bills = Bill.objects.select_related("user_profile").all()
-    return render(request, "bill_list.html", {"bills": bills})
-
-
-# ✅ PreBookings list
-def prebooking_list(request):
-    prebookings = PreBooking.objects.select_related("user_profile", "medicine").all()
-    return render(request, "aprebooklists.html", {"prebookings": prebookings})
 
 
 def doctor_list(request):
