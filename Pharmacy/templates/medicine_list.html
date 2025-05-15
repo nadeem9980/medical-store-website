@@ -19,7 +19,8 @@
         <div class="medicine-grid">
             {% for medicine in medicines %}
             <div class="medicine-card" data-id="{{ medicine.id }}" data-name="{{ medicine.name }}" data-price="{{ medicine.price }}">
-                <img src="{{ MEDIA_URL }}{{ medicine.image }}" alt="{{ medicine.name }}" width="150" height="150">
+                <img src="{{ medicine.image }}" alt="{{ medicine.name }}" width="150" height="150">
+                {% comment %} <img src="{{ MEDIA_URL }}{{ medicine.image }}" alt="{{ medicine.name }}" width="150" height="150"> {% endcomment %}
                 <h4 class="medicine-name">{{ medicine.name }}</h4>
                 <p class="pack">Pack of 1 {{ medicine.group }}</p>
                 <p class="price">Rs. {{ medicine.price }}</p>
@@ -35,8 +36,35 @@
                     <button type="submit" class="add-btn">Add to Cart</button>
                 </form>
             </div>
+            {% empty %}
+            <p>No medicines found.</p>
             {% endfor %}
         </div>
+
+        <!-- Pagination Controls -->
+        {% if medicines.has_other_pages %}
+        <div class="pagination">
+            {% if medicines.has_previous %}
+                <a href="?q={{ query }}&page={{ medicines.previous_page_number }}" class="page-link">&laquo; Prev</a>
+            {% else %}
+                <span class="page-link disabled">&laquo; Prev</span>
+            {% endif %}
+
+            {% for num in medicines.paginator.page_range %}
+                {% if medicines.number == num %}
+                    <span class="page-link current">{{ num }}</span>
+                {% elif num > medicines.number|add:'-3' and num < medicines.number|add:'3' %}
+                    <a href="?q={{ query }}&page={{ num }}" class="page-link">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if medicines.has_next %}
+                <a href="?q={{ query }}&page={{ medicines.next_page_number }}" class="page-link">Next &raquo;</a>
+            {% else %}
+                <span class="page-link disabled">Next &raquo;</span>
+            {% endif %}
+        </div>
+        {% endif %}
     </section>
 
     <!-- Right Sidebar (hidden to remove space) -->
@@ -207,8 +235,9 @@ document.addEventListener('DOMContentLoaded', function () {
     font-size: 14px;
     transition: background 0.3s;
 }
+
 .section-title {
-text-align: center;
+    text-align: center;
     font-size: 24px;
     margin-bottom: 20px;
     color: #333;
@@ -217,6 +246,43 @@ text-align: center;
 
 .add-btn:hover {
     background: #b71c1c;
+}
+
+/* Pagination styles */
+.pagination {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.page-link {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.page-link:hover {
+    background-color: #4caf50;
+    color: white;
+}
+
+.page-link.disabled {
+    color: #999;
+    border-color: #eee;
+    cursor: default;
+}
+
+.page-link.current {
+    background-color: #4caf50;
+    color: white;
+    border-color: #4caf50;
+    font-weight: bold;
+    cursor: default;
 }
 </style>
 

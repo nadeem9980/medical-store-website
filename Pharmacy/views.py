@@ -19,6 +19,8 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from .forms import CheckoutForm
+from django.core.paginator import Paginator
+
 
 
 # ✅ Home page
@@ -172,22 +174,24 @@ def pharmacy(request):
 # ✅ Medicine list
 def medicine_list(request):
     query = request.GET.get("q", "")
-    # medicines = Medicine.objects.all()
-    medicines = (
+    medicines_qs = (
         Medicine.objects.filter(name__icontains=query)
-        if query
-        else Medicine.objects.all()
-    )
-    # Pass MEDIA_URL to the template context
+        if query else Medicine.objects.all()
+    ).order_by('name')
+
+    paginator = Paginator(medicines_qs, 12)  # 12 medicines per page
+    page_number = request.GET.get('page')
+    medicines = paginator.get_page(page_number)
+
     return render(
         request,
         "medicine_list.html",
         {
             "medicines": medicines,
-            "MEDIA_URL": settings.MEDIA_URL,  # Add MEDIA_URL here
+            "MEDIA_URL": settings.MEDIA_URL,
+            "query": query,  # pass query to keep search input value if needed
         },
     )
-
 
 def add_to_cart(request):
     if request.method == "POST":

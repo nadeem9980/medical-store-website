@@ -172,9 +172,7 @@
                 <a class="nav-link" href="{% url 'cosmetics' %}">Cosmetics</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'doctor_list' %}"
-                  >Doctors</a
-                >
+                <a class="nav-link" href="{% url 'doctor_list' %}">Doctors</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'contact' %}">Contact</a>
@@ -208,7 +206,11 @@
               </li>
               {% elif request.resolver_match.url_name == 'cosmetics' %}
               <li class="nav-item">
-                <form method="get" action="{% url 'cosmetics' %}" class="navbar-search-form">
+                <form
+                  method="get"
+                  action="{% url 'cosmetics' %}"
+                  class="navbar-search-form"
+                >
                   <input
                     type="text"
                     name="q"
@@ -220,7 +222,8 @@
                     Search
                   </button>
                 </form>
-              {% endif %}
+                {% endif %}
+              </li>
             </ul>
 
             <div class="login-container">

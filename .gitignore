@@ -41,7 +41,6 @@ var/
 # Logs and database files
 *.log
 *.db
-*.sqlite3
 
 # Data files
 *.csv
