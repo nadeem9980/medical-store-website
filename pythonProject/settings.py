@@ -31,9 +31,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     "c3ec-115-186-148-210.ngrok-free.app",
+    "medical-store-fa2445392bc7.herokuapp.com",
     "localhost",
-    "127.0.0.1",
+    "127.0.0.1",    
     "nadeem9980.pythonanywhere.com",
+    "yaseenmedical.online",
 ]
 
 
@@ -52,6 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
