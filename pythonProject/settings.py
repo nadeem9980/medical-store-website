@@ -36,6 +36,8 @@ ALLOWED_HOSTS = [
     "127.0.0.1",    
     "nadeem9980.pythonanywhere.com",
     "yaseenmedical.online",
+    "www.yaseenmedical.online",
+    
 ]
 
 
