@@ -7,12 +7,14 @@ from django.utils.crypto import get_random_string
 from .models import (
     Medicine,
     Inventory,
+    Nestle,
     Order,
     UserProfile,
     Contact,
     Cosmetic,
     OrderItem,
     Doctor,
+    Nestle
 )
 from django.contrib.auth import update_session_auth_hash, login
 from django.conf import settings
@@ -388,6 +390,24 @@ def all_cosmetics(request):
         "all_cosmetics.html",
         {
             "cosmetics": cosmetics,
+            "MEDIA_URL": settings.MEDIA_URL,  # Add MEDIA_URL to the context
+        },
+    )
+def all_nestle_products(request):
+    query = request.GET.get("q", "")  # Search query from URL
+    # Filter nestle products based on the search query if any
+    nestle_products = (
+        Nestle.objects.filter(name__icontains=query)
+        if query
+        else Nestle.objects.all()
+    )
+
+    # Pass the nestle products data and MEDIA_URL to the template context
+    return render(
+        request,
+        "nestle_products.html",
+        {
+            "nestle_products": nestle_products,
             "MEDIA_URL": settings.MEDIA_URL,  # Add MEDIA_URL to the context
         },
     )

@@ -11,6 +11,7 @@ from .models import (
     Doctor,
     Cosmetic,
     OrderItem,
+    Nestle,
 )
 
 
@@ -111,6 +112,23 @@ class DoctorAdmin(admin.ModelAdmin):
 
 @admin.register(Cosmetic)
 class CosmeticAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "details",
+        "price",
+        "category",
+        "brand",
+        "batch_no",
+        "expiry_date",
+    )
+    search_fields = ("name", "category", "brand")
+    list_filter = ("category", "brand", "expiry_date")
+    ordering = ("name",)
+
+
+@admin.register(Nestle)
+class NestleAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "name",

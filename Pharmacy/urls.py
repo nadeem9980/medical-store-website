@@ -23,4 +23,5 @@ urlpatterns = [
     path("checkout-success/", views.checkout_success, name="checkout_success"),
     path("doctor-consultation/", views.doctor_list, name="doctor_list"),
     path("cosmetics/", views.all_cosmetics, name="cosmetics"),
+    path("nestle/", views.all_nestle_products, name="nestle"),
 ]
